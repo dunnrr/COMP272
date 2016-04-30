@@ -7,7 +7,7 @@
 ******************************************************************************/
 
 #include "SLinkedList.h"
-#include <stdio.h>
+#include <iostream>
 
 class PriorityQueue	: public SLinkedList<int>	// Priority Queue
 {
@@ -66,7 +66,40 @@ int PriorityQueue::deleteMin() const throw(StackEmpty)
 	return minimum;								// return the minimum value
 }
 
+
+void outputContents(PriorityQueue temp)			// output contents of PriorityQueue
+												// in order as shown in the stack
+{
+	std::cout << "The Current Stack is: ";
+	if (temp.empty())
+		std::cout << "empty";
+	while (!temp.empty())						// cycle through stack until empty
+		{
+			std::cout << temp.front() << " ";	// output the front of the stack
+			temp.removeFront();					// remove the front of the stack
+		}
+	std::cout << std::endl;
+}
+
 int main(void)
 {
-
+	PriorityQueue list;
+	list.add(1);
+	list.add(5);
+	list.add(3);
+	list.add(20);
+	list.add(15);
+	outputContents(list);
+	outputContents(list);
+	list.deleteMin();
+	outputContents(list);
+	list.deleteMin();
+	outputContents(list);
+	list.size();
+	list.deleteMin();
+	outputContents(list);
+	list.deleteMin();
+	outputContents(list);
+	list.deleteMin();
+	outputContents(list);
 }
