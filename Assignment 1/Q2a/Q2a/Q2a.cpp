@@ -88,5 +88,10 @@ int main()
 	swapConsecutive(list.head, 3);
 	swapConsecutive(list.head, 0);
 	printList(list);
+	swapConsecutive(list.head, 0);
+	printList(list);
+	list.addFront(1);
+	swapConsecutive(list.head, 0);
+	printList(list);
 	return EXIT_SUCCESS;
 }
