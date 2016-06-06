@@ -70,8 +70,8 @@ int main()
 		printTest(testCase);				// inform us of which test case
 		testCase++;							// increment test case
 		list.swap(0);						// try to swap the lead element
-		printList(list);					// print the current list
 		list.addFront(i);					// add an item to the list
+		printList(list);					// print the current list
 		i++;								// increment counter
 	}
 
