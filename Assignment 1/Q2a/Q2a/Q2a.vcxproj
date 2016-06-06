@@ -20,10 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Q2a.cpp" />
-    <ClCompile Include="SLinkedList.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SLinkedList.h" />
+    <ClInclude Include="..\..\header\SLinkedList.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4A538090-8022-4AE3-8657-F540DE6A7F73}</ProjectGuid>
@@ -95,6 +94,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>"C:\Users\Ryan\OneDrive\Documents\School\Comp 272\Source\COMP272\Assignment 1\header";</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
