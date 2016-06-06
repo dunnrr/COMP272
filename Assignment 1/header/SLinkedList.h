@@ -84,7 +84,7 @@ void SLinkedList<E>::removeFront()			//remove front item
 }
 
 template <typename E>
-void SLinkedList<E>::print()			//list printout
+void SLinkedList<E>::print()				//list printout
 {
 	SNode<E>* current = head;				//assign a current pointer
 	std::cout << "{";						//open list

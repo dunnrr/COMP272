@@ -1,86 +1,79 @@
-// Main File
+/******************************************************************************
+* Test file for question 2b for Assignment 1 of COMP 272
+* This program is designed to run tests as per stated in Assignment 1
+* submission
+*
+* Author:	Robert Ryan Dunn
+* Stu. No.:	3070207
+* Date:		5 June, 2016
+******************************************************************************/
 
 #include <iostream>
 #include "DLinkedList.h"
 
-void swapConsecutive(DLinkedList<int> &list, int index)
-{
-	if (index < 0)																			//check if index is below 0
-	{
-		std::cout << "Index is out of bounds.  Index must be 0 or greater." << std::endl;
-		return;																				//exit function with error
-	}
-	if (list.empty() || list.header->next == list.trailer->prev)							//ensure list is big enough to swap
-	{
-		std::cout << "The list is empty or too small." << std::endl;
-		return;
-	}
-
-	DNode<int>* current = list.header->next;												//assign a pointer equal to header->next
-	DNode<int>* swap = current->next;																
-	int counter = 0;																		//create a counter
-	
-	while (counter != index)																//increment the pointer in the list to specified index
-	{
-		counter++;																			//increment the counter
-		if (swap->next != list.trailer)														//check to ensure end of list is not occuring
-		{
-			current = current->next;														//increment the list pointer
-			swap = swap->next;																//increment the swap pointer
-		}
-		else
-		{
-			std::cout << "Index is out of bounds.  End of list occurred." << std::endl;		//exit function with error
-			return;
-		}
-	}
-
-	swap->prev = current->prev;
-	current->prev = swap;
-	current->next = swap->next;
-	swap->next = current;
-	swap->prev->next = swap;
-	current->next->prev = current;
-}
-
-
-void createList(DLinkedList<int> &list)
-{
-	for (int i = 0; i < 5; i++)
-	{
-		list.addFront(i);
-	}
-}
-
 void printList(DLinkedList<int> &list)
+// This function outputs what the current list is
 {
-	std::cout << "The list values are: " << std::endl;
-	while (!list.empty())
+	std::cout << "The current list is: ";
+	list.print();							// retrieve list
+	std::cout << std::endl << std::endl;
+}
+
+void addList(DLinkedList<int> &list, int size)
+// This function adds a given number of items to the list 
+{
+	printList(list);						// print the current list
+	for (int i = 0; i < size; i++)			// cycle adding to list
 	{
-		std::cout << list.front() << " ";
-		list.removeFront();
+		list.addFront(i);					// add an item to list
+		printList(list);					// print the current list
 	}
-	std::cout << std::endl;
+}
+
+void printTest(int testCase)
+// This function prints out which test case we're running
+{
+	std::cout << "Test Case " << testCase << ":" << std::endl;
 }
 
 int main()
+// The main function will run through the test cases as outlined in the 
+// attached assignment documentation
 {
-	DLinkedList<int> list;
-	createList(list);
-	printList(list);
-	createList(list);
-	swapConsecutive(list, -1);
-	swapConsecutive(list, 4);
-	swapConsecutive(list, 2);
-	printList(list);
-	createList(list);
-	swapConsecutive(list, 3);
-	swapConsecutive(list, 0);
-	printList(list);
-	swapConsecutive(list, 0);
-	printList(list);
-	list.addFront(1);
-	swapConsecutive(list, 0);
-	printList(list);
-	return EXIT_SUCCESS;
+	DLinkedList<int> list;					// initialize the list
+	int size = 5;							// initialize a size
+	int testCase = 1;						// initialize test cases
+
+	std::cout << "Creating initial list... "
+		<< std::endl << std::endl;			// create the list
+	addList(list, size);
+
+	for (int i = -1; i <= size; i++)		// run through first 6 test cases
+	{
+		printTest(testCase);				// inform us of which test case
+		testCase++;							// increment test case
+		list.swap(i);						// attempt to swap items
+		printList(list);					// print the current list
+	}
+
+	std::cout << "Emptying list... "
+		<< std::endl << std::endl;			// delete the contents of the list
+	while (!list.empty())					// check for an empty list
+	{
+		list.removeFront();				// remove front item from list
+		printList(list);				// print out current list
+	}
+
+	int i = 1;								// initialize counter
+	while (i <= 2)							// run final two test cases
+	{
+		printTest(testCase);				// inform us of which test case
+		testCase++;							// increment test case
+		list.swap(0);						// try to swap the lead element
+		list.addFront(i);					// add an item to the list
+		printList(list);					// print the current list
+		i++;								// increment counter
+	}
+
+	return EXIT_SUCCESS;					// exit successfully
 }
