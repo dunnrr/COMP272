@@ -88,6 +88,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Ryan\OneDrive\Documents\School\Comp 272\Source\COMP272\Assignment 1\header;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -148,8 +149,8 @@
     <ClCompile Include="Q1a.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RuntimeException.h" />
-    <ClInclude Include="SLinkedList.h" />
+    <ClInclude Include="..\..\header\PriorityQueue.h" />
+    <ClInclude Include="..\..\header\SLinkedList.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

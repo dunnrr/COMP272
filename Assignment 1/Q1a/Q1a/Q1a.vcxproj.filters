@@ -23,10 +23,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="RuntimeException.h">
+    <ClInclude Include="..\..\header\SLinkedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SLinkedList.h">
+    <ClInclude Include="..\..\header\PriorityQueue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
