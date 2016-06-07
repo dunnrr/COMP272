@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\header\PriorityQueue.h" />
+    <ClInclude Include="..\..\header\RuntimeException.h" />
     <ClInclude Include="..\..\header\SLinkedList.h" />
   </ItemGroup>
   <ItemGroup>

@@ -37,7 +37,7 @@ public:
 	const E& front() const;					//return front element
 	void addFront(const E& e);				//add to front of list
 	void removeFront();						//remove front item list
-	void print();							//list printout
+	void print() const;						//list printout
 	void swap(int index);					//swap consecutive items
 private:
 	SNode<E>* head;							//head of the list
@@ -84,7 +84,7 @@ void SLinkedList<E>::removeFront()			//remove front item
 }
 
 template <typename E>
-void SLinkedList<E>::print()				//list printout
+void SLinkedList<E>::print() const			//list printout
 {
 	SNode<E>* current = head;				//assign a current pointer
 	std::cout << "{";						//open list

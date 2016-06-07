@@ -16,65 +16,80 @@
 #define _PRIORITYQUEUE_H_
 
 #include "SLinkedList.h"
+#include "RuntimeException.h"
 
 template <typename E>
-class PriorityQueue							//priority queue
+class PriorityQueue										//priority queue
 {
 public:
-	PriorityQueue();						//constructor
-	void add(const E& e);					//add an item to the queue
-	bool empty();							//checks for empty
-	E min();								//returns the minimum value
-	void deleteMin();						//deletes the minimum item
-	void print();							//prints the queue
+	PriorityQueue();									//constructor
+	void add(const E& e);								//add item queue
+	bool empty() const;									//checks for empty
+	const E& min() throw(QueueEmpty);					//returns min value
+	int size() const;									//returns queue size 
+	void deleteMin() throw(QueueEmpty);					//deletes min item
+	void print() const;									//prints queue
 private:
-	SLinkedList<E> SLList;					//list to manipulate
+	SLinkedList<E> SLList;								//list to manipulate
+	int queueSize;										//size counter
 };
 
 template <typename E>
-PriorityQueue<E>::PriorityQueue()			//constructor
-	:SLList() {};
+PriorityQueue<E>::PriorityQueue()						//constructor
+	:SLList(), queueSize(0) {};
 
 template <typename E>
-void PriorityQueue<E>::add(const E& e)		//add an item to the queue
+void PriorityQueue<E>::add(const E& e)					//add item to queue
 // this function ensures that the items 
 // are sorted when added to ensure that
 // the deleteMin function works properly
 {
-	SLinkedList<E> temp;					//create a temporary list
-	while (!empty() && e > SLList.front())	//search for the minimum
+	SLinkedList<E> temp;								//create a temp list
+	while (!empty() && e > SLList.front())				//search for min
 	{
-		temp.addFront(SLList.front());		//add front item to temp
-		SLList.removeFront();				//remove the front item
+		temp.addFront(SLList.front());					//add front item
+		SLList.removeFront();							//remove front item
 	}
-	SLList.addFront(e);						//add new item to list
-	while (!temp.empty())					//cycle through temp
+	SLList.addFront(e);									//add new item to list
+	while (!temp.empty())								//cycle through temp
 	{
-		SLList.addFront(temp.front());		//add front element to SLList
-		temp.removeFront();					//remove front element from temp
+		SLList.addFront(temp.front());					//add front element
+		temp.removeFront();								//remove front element
 	}
+	queueSize++;										//increment queueSize
 }
 
 template <typename E>
-bool PriorityQueue<E>::empty()				//checks for empty
+bool PriorityQueue<E>::empty() const					//checks for empty
 {
 	return SLList.empty();
 }
 
 template <typename E>
-E PriorityQueue<E>::min()					//returns the minimum value
+const E& PriorityQueue<E>::min() throw(QueueEmpty)		//returns min value
 {
+	if (empty())										//check for empty
+		throw QueueEmpty("Queue is Empty");
 	return SLList.front();
 }
 
 template <typename E>
-void PriorityQueue<E>::deleteMin()			//delete the minimum
+int PriorityQueue<E>::size() const						//returns queue size
 {
-	SLList.removeFront();					
+	return queueSize;
 }
 
 template <typename E>
-void PriorityQueue<E>::print()				//print the list
+void PriorityQueue<E>::deleteMin() throw(QueueEmpty)	//delete minimum
+{
+	if (empty())										//check for empty
+		throw QueueEmpty("Queue is Empty");
+	SLList.removeFront();
+	queueSize--;
+}
+
+template <typename E>
+void PriorityQueue<E>::print() const					//print list
 {
 	SLList.print();
 }
