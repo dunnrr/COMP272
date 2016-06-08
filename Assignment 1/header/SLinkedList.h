@@ -12,8 +12,8 @@
 * Date:		5 June, 2016
 ******************************************************************************/
 
-#ifndef _SLINKEDLIST_H_
-#define _SLINKEDLIST_H_
+#ifndef _SLINKEDLIST_H_						//if not defined
+#define _SLINKEDLIST_H_						//define SLinkedList
 
 #include <iostream>
 
@@ -34,9 +34,9 @@ public:
 	SLinkedList();							//empty list constructor
 	~SLinkedList();							//destructor
 	bool empty() const;						//is list empty?
-	const E& front() const;					//return front element
+	const E& front() const throw(ListEmpty);//return front element
 	void addFront(const E& e);				//add to front of list
-	void removeFront();						//remove front item list
+	void removeFront() throw(ListEmpty);	//remove front item list
 	void print() const;						//list printout
 	void swap(int index);					//swap consecutive items
 private:
@@ -53,9 +53,11 @@ bool SLinkedList<E>::empty() const	 		//is list empty?
 	return head == nullptr;
 }
 
-template <typename E>
-const E& SLinkedList<E>::front() const		//return front element
+template <typename E>						//return front element
+const E& SLinkedList<E>::front() const throw(ListEmpty)
 {
+	if (empty())							//if empty
+		throw ListEmpty("List is empty");	//throw error
 	return head->elem;
 }
 
@@ -75,9 +77,11 @@ void SLinkedList<E>::addFront(const E& e)	//add to front of list
 	head = v;								//v is now the head
 }
 
-template <typename E>
-void SLinkedList<E>::removeFront()			//remove front item
+template <typename E>						//remove front item
+void SLinkedList<E>::removeFront() throw(ListEmpty)	
 {
+	if (empty())							//if empty
+		throw ListEmpty("List is empty");	//throw error	
 	SNode<E>* old = head;					//save current head
 	head = old->next;						//skip over old head
 	delete old;								//delete the old head

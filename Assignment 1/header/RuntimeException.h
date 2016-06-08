@@ -25,11 +25,25 @@ public:
 	std::string getMessage() const { return errorMsg; }
 };
 
-//Exception thrown performing min() or deleteMin() to an empty queue
+//Exception thrown due to empty queue
 class QueueEmpty : public RuntimeException
 {
 public:
 	QueueEmpty(const std::string& err) : RuntimeException(err) {}
+};
+
+//Exception thrown due to empty list
+class ListEmpty : public RuntimeException
+{
+public:
+	ListEmpty(const std::string& err) : RuntimeException(err) {}
+};
+
+//Exception thrown due to empty stack
+class StackEmpty : public RuntimeException
+{
+public:
+	StackEmpty(const std::string& err) : RuntimeException(err) {}
 };
 
 #endif

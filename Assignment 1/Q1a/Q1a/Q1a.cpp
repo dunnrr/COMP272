@@ -1,9 +1,10 @@
 /******************************************************************************
-*Implementation of add(x), deleteMin(), and size(), using a singly-linked list.
+* Test program for the Implementation of add(x), deleteMin(), and size(), using 
+* a singly-linked list as required for COMP 272 assignment 1a.
 *
-*Author: Robert Ryan Dunn
-*SN: 3070207
-*Date: April, 2016
+* Author: Robert Ryan Dunn
+* SN: 3070207
+* Date: 5 June, 2016
 ******************************************************************************/
 
 #include "PriorityQueue.h"
@@ -29,7 +30,7 @@ void minQueue(PriorityQueue<int> &queue)			//print out the min value
 		std::cout << "The minimum value is: "		
 			<< queue.min() << std::endl << std::endl;
 	}
-	catch (QueueEmpty& err)						//show error if not
+	catch (QueueEmpty& err)							//show error if not
 	{
 		std::cout << "Exception: " << err.getMessage()
 			<< std::endl << std::endl;
@@ -72,26 +73,26 @@ int main(void)
 	queue.add(5);
 	printQueue(queue);								//print queue
 	
-	testCase(test);
+	testCase(test);									//print out test case no.
 	sizeQueue(queue);								//queue size
 
-	testCase(test);
-	minQueue(queue);
+	testCase(test);									//print out test case no.
+	minQueue(queue);								//retrieve minimum element
 
-	testCase(test);
-	while (!queue.empty())
+	testCase(test);									//print out test case no.
+	while (!queue.empty())							//cycle until empty
 	{
 		deleteMin(queue);							//delete minimum element
 		printQueue(queue);							//print queue
 	}
 
-	testCase(test);
+	testCase(test);									//print out test case no.
 	sizeQueue(queue);								//queue size
 
-	testCase(test);
-	minQueue(queue);
+	testCase(test);									//print out test case no.
+	minQueue(queue);								//retrieve minimum element
 
-	testCase(test);
-	deleteMin(queue);
+	testCase(test);									//print out test case no.
+	deleteMin(queue);								//delete minimum element
 	return EXIT_SUCCESS;							//exit success
 }

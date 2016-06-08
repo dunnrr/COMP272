@@ -88,6 +88,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Users\Ryan\OneDrive\Documents\School\Comp 272\Source\COMP272\Assignment 1\header;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,14 +146,12 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CircleList.cpp" />
     <ClCompile Include="Q1b.cpp" />
-    <ClCompile Include="Queue.cpp" />
-    <ClCompile Include="Stack.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CircleList.h" />
-    <ClInclude Include="Queue.h" />
+    <ClInclude Include="..\..\header\CircleList.h" />
+    <ClInclude Include="..\..\header\Queue.h" />
+    <ClInclude Include="..\..\header\RuntimeException.h" />
     <ClInclude Include="Stack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
