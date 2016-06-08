@@ -1,5 +1,5 @@
 /******************************************************************************
-* Test program for the Implementation of push() and pop(X) functions for a
+* Test program for the Implementation of push(x) and pop() functions for a
 * stack using two queues as per COMP 272 assignment 1b.
 *
 * Author: Robert Ryan Dunn
