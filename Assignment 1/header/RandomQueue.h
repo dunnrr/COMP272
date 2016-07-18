@@ -8,11 +8,34 @@
 * Date: May 23, 2016
 ******************************************************************************/
 
-#include "RandomQueue.h"						// includes required for class
-#include <random>										
-#include <time.h>
-#include <exception>
+#ifndef _RANDOMQUEUE_H_							// ensure header hasn't already
+#define _RANDOMQUEUE_H_							// been defined
 
+#include <random>								// includes required for class
+#include <time.h>
+#include <iostream>
+#include "RuntimeException.h"
+
+template <typename E>
+class RandomQueue								// RandomQueue
+{
+public:
+	RandomQueue(int maxEnt);					// empty queue constructor
+	~RandomQueue();								// destructor
+	bool empty() const;							// is queue empty?
+	int size() const;							// return the size of queue
+	void add(const E& e);						// add item to end of queue
+	E atIndex(const int index) const
+		throw(IndexOutOfBounds);				// returns element at index i
+	void remove() throw(QueueEmpty);			// remove an item at random
+	void print() const;							// print out the queue
+private:
+	int maxEntries;								// maximum number of entries
+	int queueSize;								// size of queue counter
+	E* queueEntries;							// array of queue entries
+protected:
+	void doubleSize();							// double the size of the array
+};
 
 template<typename E>
 RandomQueue<E>::RandomQueue(int maxEnt)			// constructor
@@ -49,22 +72,24 @@ void RandomQueue<E>::add(const E& e)			// add item to end of queue
 	queueSize++;								// increase queueSize count
 }
 
-template<typename E>
-E RandomQueue<E>::atIndex(const int i)			// returns element at index i
+template<typename E>							
+E RandomQueue<E>::atIndex(const int index) 
+	const throw(IndexOutOfBounds)				// returns element at index i
 {
-	if ((i >= queueSize) || (i < 0))			// check index for out of range
-		throw "Index out of range!";			// throw error
-	return queueEntries[i];						// return element at index i
+	if ((index >= queueSize) || (index < 0))	// check index for out of range
+		throw 
+		IndexOutOfBounds("Index out of bounds");// throw error
+	return queueEntries[index];					// return element at index i
 }
 
 template<typename E>
-void RandomQueue<E>::remove()					// remove an item at random
+void RandomQueue<E>::remove() throw(QueueEmpty)	// remove an item at random
 {
 	if (empty())								// check for empty
-		return;
+		throw QueueEmpty("Queue is empty");
 	srand(time(NULL));
 	int removeIndex = rand() % queueSize;		// initialize index to remove
-	queueEntries[removeIndex] = 
+	queueEntries[removeIndex] =
 		queueEntries[queueSize - 1];			// move last entry to location
 												// of index being removed
 	queueSize--;								// change size of queue
@@ -75,7 +100,7 @@ void RandomQueue<E>::doubleSize()				// double the size of the array
 {
 	maxEntries *= 2;							// increase capacity of array
 	E* temp = new E[maxEntries];				// create temporary array
-	for (int i = 0; i < queueSize; i++)					
+	for (int i = 0; i < queueSize; i++)
 	{
 		temp[i] = queueEntries[i];				// copy contents of array
 	}
@@ -83,4 +108,20 @@ void RandomQueue<E>::doubleSize()				// double the size of the array
 	queueEntries = temp;						// reassign array to temp
 }
 
-template class RandomQueue<int>;				// initialize class with <int>
+template<typename E>
+void RandomQueue<E>::print() const				// print the queue
+{
+	std::cout << "{";
+	for (int i = 0; i < size(); i++)			// cycle through queue
+	{
+		std::cout << atIndex(i);				// output queue elements
+		if (i != size() - 1)					// check for last element
+			std::cout << " ";
+	}
+	std::cout << "}";
+}
+
+#endif											// end header definition
+
+
+

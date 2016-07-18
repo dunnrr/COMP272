@@ -46,4 +46,10 @@ public:
 	StackEmpty(const std::string& err) : RuntimeException(err) {}
 };
 
+//Exception thrown when index out of bounds
+class IndexOutOfBounds : public RuntimeException
+{
+public:
+	IndexOutOfBounds(const std::string& err): RuntimeException(err) {}
+};
 #endif

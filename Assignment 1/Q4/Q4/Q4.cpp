@@ -20,51 +20,88 @@ void addQueue(RandomQueue<int> &queue, int size)
 void printQueue(RandomQueue<int> &queue)
 // printQueue prints out the list of items in RandomQueue
 {
-	std::cout << "The list values are: " 
-		<< std::endl;
-	for (int i = 0; i < queue.size(); i++)		// cycle through queue
-		std::cout << queue.atIndex(i) << " ";	// output queue elements	
+	std::cout << "The queue values are: ";
+	queue.print();
 	std::cout << std::endl;
+}
+
+void remove(RandomQueue<int> &queue)			// deletes random value
+{
+	try
+	{
+		queue.remove();							// delete value if possible
+	}
+	catch (QueueEmpty& err)						// show error if not
+	{
+		std::cout << "Exception: " << err.getMessage()
+			<< std::endl << std::endl;
+	}
+}
+
+void printIndex(RandomQueue<int> &queue, int index)
+{
+	std::cout << "The item at index "
+		<< index << " is:" << std::endl;
+	try
+	{
+		std::cout << queue.atIndex(index)
+			<< std::endl << std::endl;			// output value if possible
+	}
+	catch (IndexOutOfBounds& err)
+	{
+		std::cout << "Exception: " << err.getMessage()
+			<< std::endl << std::endl;			// show error if not
+	}
 }
 
 void batchRemove(RandomQueue<int> &queue, int x)
 // batchRemove removes a batch of items from RandomQueue
 {
 	for (int i = 0; i < x; i++)					// cycle number of elements
-		queue.remove();							// remove queue element
+		remove(queue);							// remove queue element
+}
+
+void testCase(int &test)						// prints test case value
+{
+	std::cout << "Test Case: " << test
+		<< std::endl;
+	test++;
 }
 
 void Q4test()
 // Q4test runs through adding and removing elements from the queue and 
 // outputs resulting list several times
 {
-	RandomQueue<int> queue(20);					// initialize queue
+	RandomQueue<int> queue(10);					// initialize queue
+	int test = 1;								// assign test case value
+	
+	printQueue(queue);							// print out elements of queue
+
+	testCase(test);								// print out test case no.
 	addQueue(queue, 20);						// add 20 items to queue
 	printQueue(queue);							// print out elements of queue
+
+	testCase(test);								// print out test case no.
 	batchRemove(queue, 5);						// remove 5 elements from queue
 	printQueue(queue);							// print out elements of queue
-	addQueue(queue, 20);						// add 20 items to queue
+
+	testCase(test);								// print out test case no.
+	printIndex(queue, -1);						// try to cause access error
+
+	testCase(test);								// print out test case no.
+	printIndex(queue, queue.size());			// try to cause access error
+
+	testCase(test);								// print out test case no.
 	printQueue(queue);							// print out elements of queue
-	batchRemove(queue, 9);						// remove 9 elements from queue	
+	printIndex(queue, 10);						// retrieve value at index 10
 	printQueue(queue);							// print out elements of queue
-	try
-	{
-		std::cout << queue.atIndex(-1)
-			<< std::endl;						// try to cause access error
-	}
-	catch (const char* msg)
-	{
-		std::cerr << msg << std::endl;			// access error message
-	}
-	try
-	{
-		std::cout << queue.atIndex(queue.size())
-			<< std::endl;						// try to cause access error
-	}
-	catch (const char* msg)
-	{
-		std::cerr << msg << std::endl;			// access error message
-	}
+
+	testCase(test);								// print out test case no.
+	batchRemove(queue, 15);						// remove all items from queue
+	printQueue(queue);							// print out elements of queue
+	batchRemove(queue, 1);						// remove 1 item from queue
+	printQueue(queue);
+
 }
 
 int main()
