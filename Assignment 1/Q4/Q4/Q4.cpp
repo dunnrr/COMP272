@@ -22,13 +22,15 @@ void printQueue(RandomQueue<int> &queue)
 {
 	std::cout << "The queue values are: ";
 	queue.print();
-	std::cout << std::endl;
+	std::cout << std::endl << std::endl;
 }
 
 void remove(RandomQueue<int> &queue)			// deletes random value
 {
 	try
 	{
+		std::cout << "Removing an item..."
+			<< std::endl;
 		queue.remove();							// delete value if possible
 	}
 	catch (QueueEmpty& err)						// show error if not
@@ -99,6 +101,8 @@ void Q4test()
 	testCase(test);								// print out test case no.
 	batchRemove(queue, 15);						// remove all items from queue
 	printQueue(queue);							// print out elements of queue
+
+	testCase(test);								// print out test case no.
 	batchRemove(queue, 1);						// remove 1 item from queue
 	printQueue(queue);
 
