@@ -53,9 +53,9 @@ void printList(PositionList<int> positions)			//print out position list
 {
 	cout << "[";
 	int i = 1;
-	for(Node<int>* n : positions)
+	for(Position<int> n : positions)
 	{
-		cout << n->element;
+		cout << *n;
 		if (i < positions.size())
 			cout << ", ";
 		i++;

@@ -15,7 +15,7 @@
 
 #include <iostream>
 #include <list>
-//#include "RuntimeException.h"
+#include "RuntimeException.h"
 
 using std::cout;
 using std::endl;
@@ -32,14 +32,14 @@ struct Node									//a node of the tree
 		left(nullptr), right(nullptr) {}	//constructor
 };
 
-/*
+
 template <typename E>
 class Position								//position in the tree
 {
 private:
-	Node* v;								//pointer to the node
+	Node<E>* v;								//pointer to the node
 public:
-	Position<E>(Node* _v = nullptr) : v(_v) 
+	Position<E>(Node<E>* _v = nullptr) : v(_v) 
 	{}										//constructor
 	E& operator*()
 	{ return v->element; }					//get element
@@ -57,11 +57,11 @@ public:
 	template <typename E1>
 	friend class BinaryTree;				//provide BinaryTree access
 };
-*/
+
 
 template <typename E, 
-	typename GenericNode = Node<E>* >
-using PositionList = list<GenericNode>;		//list of positions
+	typename GenericPosition = Position<E>>
+using PositionList = list<GenericPosition>;	//list of positions
 
 
 
@@ -77,7 +77,7 @@ public:
 	~BinaryTree();							//destructor
 	int size() const;						//number of nodes
 	bool empty() const;						//is tree empty?
-	Node<E>* root() const;					//get the root
+	Position<E> root() const;				//get the root
 	PositionList<E> prePositions() const;	//preorder list of nodes
 	PositionList<E> postPositions() const;	//postorder list of nodes
 	PositionList<E> inPositions() const;	//inorder list of nodes
@@ -126,7 +126,7 @@ bool BinaryTree<E>::empty() const	 		//is tree empty?
 }
 
 template <typename E>						//get the root
-Node<E>* BinaryTree<E>::root() const
+Position<E> BinaryTree<E>::root() const
 {
 	return _root;
 }
@@ -137,7 +137,7 @@ PositionList<E> BinaryTree<E>::prePositions() const
 {
 	PositionList<E> pl;
 	preorder(_root, pl);					//preorder traversal
-	return pl;								//return resulting list
+	return PositionList<E>(pl);				//return resulting list
 }
 
 template <typename E>						//postorder list of nodes
@@ -145,7 +145,7 @@ PositionList<E> BinaryTree<E>::postPositions() const
 {
 	PositionList<E> pl;
 	postorder(_root, pl);					//postorder traversal
-	return pl;								//return resulting list
+	return PositionList<E>(pl);				//return resulting list
 }
 
 template <typename E>						//inorder list of nodes
@@ -153,7 +153,7 @@ PositionList<E> BinaryTree<E>::inPositions() const
 {
 	PositionList<E> pl;
 	inorder(_root, pl);						//inorder traversal
-	return pl;								//return resulting list
+	return PositionList<E>(pl);				//return resulting list
 }
 
 
