@@ -3,7 +3,7 @@
 *
 * Modified from Source: Data Structures and Algorithms in C++, 2nd Edition,
 *						by Michael T. Goodrich, Roberto Tamassia, David M.
-*						Mount, Wiley publisher, February 2011, © 2011
+*						Mount, Wiley publisher, February 2011, Â© 2011
 *
 * Author:	Robert Ryan Dunn
 * Stu. No.:	3070207
@@ -30,6 +30,20 @@ class TreeEmpty : public RuntimeException
 {
 public:
 	TreeEmpty(const std::string& err) : RuntimeException(err) {}
+};
+
+//Exception thrown due to empty tree
+class TreeLastItem : public RuntimeException
+{
+public:
+	TreeLastItem(const std::string& err) : RuntimeException(err) {}
+};
+
+//Exception thrown due to empty tree
+class NodeNotFound : public RuntimeException
+{
+public:
+	NodeNotFound(const std::string& err) : RuntimeException(err) {}
 };
 
 //Exception thrown due to empty queue

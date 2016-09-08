@@ -14,34 +14,97 @@
 using std::cout;
 using std::endl;
 
-/*
-void deleteMin(PriorityQueue<int> &queue)			//deletes minimum value
+
+void nextBT(BinaryTree<int> &BT, 
+	int x, Traversal order)							//print out next node value
 {
-	try
+	switch (order)
 	{
-		queue.deleteMin();							//delete value if possible
+		case PREORDER:
+			cout << "Preorder: ";
+			break;
+		case POSTORDER:
+			cout << "Postorder: ";
+			break;
+		case INORDER:
+			cout << "Inorder: ";
+			break;
 	}
-	catch (QueueEmpty& err)							//show error if not
+	try
+	{												//print node if possible
+		cout << "The next node after node " << x
+			<< " is: ";
+		switch (order)
+		{
+			case PREORDER:
+				cout << *BT.preorderNext(BT.search(x));
+				break;
+			case POSTORDER:
+				cout << *BT.postorderNext(BT.search(x));
+				break;
+			case INORDER:
+				cout << *BT.inorderNext(BT.search(x));
+				break;
+		}
+		cout << endl << endl;
+	}
+	catch (TreeEmpty& err)							//show error if not
+	{
+		cout << "Exception: " << err.getMessage()
+			<< endl << endl;
+	}
+	catch (TreeLastItem& err)						//show error if not
+	{
+		cout << "Exception: " << err.getMessage()
+			<< endl << endl;
+	}
+	catch (NodeNotFound& err)						//show error if not
 	{
 		cout << "Exception: " << err.getMessage()
 			<< endl << endl;
 	}
 }
 
-void minQueue(PriorityQueue<int> &queue)			//print out the min value
+void removeNode(BinaryTree<int> &BT, int x)
 {
 	try
-	{												//print value if possible
-		cout << "The minimum value is: "
-			<< queue.min() << endl << endl;
+	{
+		BT.remove(BT.search(x));					//remove node if possible
 	}
-	catch (QueueEmpty& err)							//show error if not
+	catch (TreeEmpty& err)							//show error if not
+	{
+		cout << "Exception: " << err.getMessage()
+			<< endl << endl;						
+	}
+	catch (NodeNotFound& err)						//show error if not
 	{
 		cout << "Exception: " << err.getMessage()
 			<< endl << endl;
+	}	
+}
+
+void printRoot(BinaryTree<int> &BT)					//print the root node
+{
+	try
+	{
+		cout << "The current root is : "
+		<< *BT.root() << endl << endl;				//print out current root	
+	}
+	catch (TreeEmpty& err)							//show error if not
+	{
+		cout << "Exception: " << err.getMessage()
+			<< endl << endl;						
 	}
 }
-*/
+
+void emptyTree(BinaryTree<int> &BT)					//print out if empty or not
+{
+	cout << "The tree is empty: ";
+	if ( BT.empty() )								//is the tree empty?
+		cout << "TRUE" << endl << endl;
+	else
+		cout << "FALSE" << endl << endl;
+}
 
 void sizeTree(BinaryTree<int> &BT)					//print out the tree size
 {
@@ -79,8 +142,7 @@ void printBT(BinaryTree<int> &BT)					//print out current tree
 	cout << "The inorder positions are: ";
 	positions = BT.inPositions();					
 	printList(positions);							//print out preorder tree
-	cout << endl << endl;
-	
+	cout << endl << endl;	
 }
 
 void testCase(int &test)							//prints test case value
@@ -96,7 +158,7 @@ int main(void)
 	int test = 1;									//assign test case value
 
 	testCase(test);									//print out test case no.
-	sizeTree(BT);									//queue size
+	sizeTree(BT);									//tree size
 
 	testCase(test);									//print out test case no.
 	BT.add(5);										//add items to tree
@@ -113,20 +175,79 @@ int main(void)
 	testCase(test);									//print out test case no.
 	sizeTree(BT);									//tree size
 
-//	testCase(test);									//print out test case no.
-//	minQueue(queue);								//retrieve minimum element
+	testCase(test);									//print out test case no.
+	nextBT(BT,2,PREORDER);							//retreive the next element
+	nextBT(BT,2,POSTORDER);							//retreive the next element
+	nextBT(BT,2,INORDER);							//retreive the next element
+	
+	testCase(test);									//print out test case no.
+	nextBT(BT,8,PREORDER);							//retreive the next element
+	nextBT(BT,5,POSTORDER);							//retreive the next element
+	nextBT(BT,9,INORDER);							//retreive the next element
 
-//	testCase(test);									//print out test case no.
-//	while (!queue.empty())							//cycle until empty
-//	{
-//		deleteMin(queue);							//delete minimum element
-//		printQueue(queue);							//print queue
-//	}
+	testCase(test);									//print out test case no.
+	nextBT(BT,10,PREORDER);							//retreive the next element
+	nextBT(BT,10,POSTORDER);						//retreive the next element
+	nextBT(BT,10,INORDER);							//retreive the next element
+	
+	testCase(test);									//print out test case no.
+	removeNode(BT,7);								//remove node w 2 children
+	printBT(BT);									//print tree
+	sizeTree(BT);									//print tree size	
 
-//	testCase(test);									//print out test case no.
-//	minQueue(queue);								//retrieve minimum element
+	testCase(test);									//print out test case no.
+	removeNode(BT,9);								//remove leaf
+	printBT(BT);									//print tree
+	sizeTree(BT);									//print tree size
 
-//	testCase(test);									//print out test case no.
-//	deleteMin(queue);								//delete minimum element
+	testCase(test);									//print out test case no.
+	removeNode(BT,8);								//remove node w 1 child
+	printBT(BT);									//print tree
+	sizeTree(BT);									//print tree size
+
+	testCase(test);									//print out test case no.
+	printRoot(BT);									//print out current root
+	removeNode(BT,5);								//remove root
+	printRoot(BT);									//print out current root
+	printBT(BT);									//print tree
+	sizeTree(BT);									//print tree size
+
+	testCase(test);									//print out test case no.
+	removeNode(BT,5);								//remove a non-existant node
+	printBT(BT);									//print tree
+	sizeTree(BT);									//print tree size
+
+	testCase(test);									//print out test case no.
+	emptyTree(BT);									//print out if empty or not
+	cout << "Removing remaining nodes" << endl;		//remove remaining nodes
+	removeNode(BT,1);								
+	removeNode(BT,2);
+	removeNode(BT,3);
+	removeNode(BT,4);
+	removeNode(BT,6);
+	sizeTree(BT);									//print tree size
+	
+	emptyTree(BT);									//print out if empty or not
+
+	cout << "Error checking against empty tree." 
+		<< endl;
+	cout << "Printing empty tree: " << endl;
+	printBT(BT);									//print tree
+	
+	cout << "Printing the root: ";
+	printRoot(BT);									//print out current root
+	
+	cout << "Removing a node: ";
+	removeNode(BT, 5);								//remove node
+	
+	cout << "Preorder next: ";
+	nextBT(BT,5,PREORDER);							//find next node(preorder)
+	
+	cout << "Postorder next: ";
+	nextBT(BT,5,POSTORDER);							//find next node(postorder)
+	
+	cout << "Inorder next: ";
+	nextBT(BT,5,INORDER);							//find next node(inorder)
+	
 	return EXIT_SUCCESS;							//exit success
 }

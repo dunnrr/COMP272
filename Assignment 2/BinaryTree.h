@@ -17,8 +17,6 @@
 #include <list>
 #include "RuntimeException.h"
 
-using std::cout;
-using std::endl;
 using std::list;
 
 template <typename E>
@@ -51,47 +49,56 @@ public:
 	{ return Position(v->parent); }			//get parent
 	bool isRoot() const
 	{ return v->parent == nullptr; }		//root of tree?
-	bool isExternal() const					
-	{ return v->left == nullptr && 
-		v->right == nullptr; }				//an external node?
 	template <typename E1>
 	friend class BinaryTree;				//provide BinaryTree access
 };
 
 
 template <typename E, 
-	typename GenericPosition = Position<E>>
-using PositionList = list<GenericPosition>;	//list of positions
+	typename GenericNode = Node<E>*>
+using PositionList = list<GenericNode>;		//list of positions
 
-
+enum Traversal { PREORDER, POSTORDER, 
+	INORDER };								//types of traversal
 
 template <typename E>
 class BinaryTree							//Binary Tree
 {
-protected:
-public:
-//	class Position<E>;						//a node position
-//	class PositionList<E>;					//a list of positions
 public:	
 	BinaryTree();							//constructor
 	~BinaryTree();							//destructor
 	int size() const;						//number of nodes
 	bool empty() const;						//is tree empty?
 	Position<E> root() const;				//get the root
+	Position<E> preorderNext(
+		Position<E> x);						//get node after node x (preorder)
+	Position<E> postorderNext(
+		Position<E> x);						//get node after node x (postorder)
+	Position<E> inorderNext(
+		Position<E> x);						//get node after node x (inorder)
 	PositionList<E> prePositions() const;	//preorder list of nodes
 	PositionList<E> postPositions() const;	//postorder list of nodes
 	PositionList<E> inPositions() const;	//inorder list of nodes
-	void add(E value);						//add a value to the tree
-//	void expandExternal(
-//		const Position<E>& p);				//expand external node
-//	Position<E> removeAboveExternal(
-//		const Position<E>& p);				//remove p and parent
+	void add(E x);							//add x to the tree
+	void remove(Position<E> x);				//remove node x from the tree
+	Position<E> search(E x);				//get node containing x
 protected:
 	void addRoot();							//add root to empty tree
 	void addNode(Node<E>* v, bool addLeft,
 		E value);							//add node to tree
+	void splice(Node<E>* v);				//splice in a node from elsewhere
 	void deleteTree(Node<E>* v);			//destructor utility
-	void addValue(Node<E>* v, E value);		//add utility
+	void addValue(Node<E>* v, E x);			//add utility
+	Node<E>* searchTree(Node<E>* v,
+		E x);								//search tree utility
+	void preNext(Node<E>* v, Node<E>* x, 
+		Node<E>* y);						//get next utility (preorder)
+	void postNext(Node<E>* v, Node<E>* x, 
+		Node<E>* y);						//get next utility (postorder)
+	void inNext(Node<E>* v, Node<E>* x, 
+		Node<E>* y);						//get next utility (inorder)
+	Node<E>* next(Node<E>* x, 
+		Traversal order);					//return node after one given
 	void preorder(Node<E>* v, 
 		PositionList<E>& pl) const;			//preorder utility
 	void postorder(Node<E>* v,
@@ -128,34 +135,98 @@ bool BinaryTree<E>::empty() const	 		//is tree empty?
 template <typename E>						//get the root
 Position<E> BinaryTree<E>::root() const
 {
-	return _root;
+	if ( empty() )
+		throw TreeEmpty("Tree is empty.");	//throw error
+	return Position<E>(_root);
 }
 
+template <typename E>						//get node after node x (preorder)
+Position<E> BinaryTree<E>::preorderNext(Position<E> x)
+{
+	Traversal traversalType = PREORDER;		//assign type of traversal
+	return Position<E>(next(x.v, 
+		traversalType));					//return the next node
+}
+
+template <typename E>						//get node after node x (postorder)
+Position<E> BinaryTree<E>::postorderNext(Position<E> x)
+{
+	Traversal traversalType = POSTORDER;	//assign type of traversal
+	return Position<E>(next(x.v, 
+		traversalType));					//return the next node
+}
+
+template <typename E>						//get node after node x (inorder)	
+Position<E> BinaryTree<E>::inorderNext(Position<E> x)
+{
+	Traversal traversalType = INORDER;		//assign type of traversal
+	return Position<E>(next(x.v, 
+		traversalType));					//return the next node
+}
 
 template <typename E>						//preorder list of nodes
 PositionList<E> BinaryTree<E>::prePositions() const
 {
 	PositionList<E> pl;
-	preorder(_root, pl);					//preorder traversal
-	return PositionList<E>(pl);				//return resulting list
+	if ( !empty() )							//check for empty
+		preorder(_root, pl);				//preorder traversal
+	return pl;								//return resulting list
 }
 
 template <typename E>						//postorder list of nodes
 PositionList<E> BinaryTree<E>::postPositions() const
 {
 	PositionList<E> pl;
-	postorder(_root, pl);					//postorder traversal
-	return PositionList<E>(pl);				//return resulting list
+	if ( !empty() )							//check for empty
+		postorder(_root, pl);				//postorder traversal
+	return pl;								//return resulting list
 }
 
 template <typename E>						//inorder list of nodes
 PositionList<E> BinaryTree<E>::inPositions() const
 {
 	PositionList<E> pl;
-	inorder(_root, pl);						//inorder traversal
-	return PositionList<E>(pl);				//return resulting list
+	if ( !empty() )							//check for empty
+		inorder(_root, pl);					//inorder traversal
+	return pl;								//return resulting list
 }
 
+template <typename E>
+void BinaryTree<E>::add(E x)				//add a value to the tree
+{
+	if(empty())								//if empty
+	{
+		addRoot();							//create root
+		Node<E>* v = _root;					
+		v->element = x;						//assign a value to root
+	}
+	else
+		addValue(_root, x);					//use add utility		
+}
+
+template <typename E>
+void BinaryTree<E>::remove(Position<E> x)	//remove node x from the tree
+{
+	if ( x.v->left == nullptr || 
+		x.v->right == nullptr )				//does x only have 0 or 1 children?
+		splice(x.v);						//splice node x
+	else
+	{
+		Node<E>* w = x.v->right;			//assign node w to x's right
+		while ( w->left != nullptr )		//until w->left is a nullptr
+			w = w->left;					//assign w as w->left
+		x.v->element = w->element;			//move the value of w to x
+		splice(w);							//splice node w
+	}
+}
+
+template <typename E>
+Position<E> BinaryTree<E>::search(E x)		//get node containing x
+{
+	if ( empty() )							//check for empty
+		throw TreeEmpty("Tree is empty.");	//throw error
+	return Position<E>(searchTree(_root,x));//search for the result
+}
 
 template <typename E>
 void BinaryTree<E>::addRoot()				//add root to empty tree
@@ -165,7 +236,7 @@ void BinaryTree<E>::addRoot()				//add root to empty tree
 }
 
 template <typename E>						//add node to tree
-void BinaryTree<E>::addNode(Node<E>* v, bool addLeft, E value)
+void BinaryTree<E>::addNode(Node<E>* v, bool addLeft, E x)
 {
 	Node<E>* w = new Node<E>;
 	if(addLeft)
@@ -173,62 +244,34 @@ void BinaryTree<E>::addNode(Node<E>* v, bool addLeft, E value)
 	else
 		v->right = w;
 	w->parent = v;
-	w->element = value;
+	w->element = x;
 	n += 1;
 }
 
 template <typename E>
-void BinaryTree<E>::add(E value)			//add a value to the tree
+void BinaryTree<E>::splice(Node<E>* v)		//splice in a node from elsewhere
 {
-	if(empty())								//if empty
+	Node<E>* s = v;							//assign s as v
+	Node<E>* p = v->parent;					//assign p as v->parent
+	if ( v->left != nullptr)				//is v->left not null?
+		s = v->left;						//assign s as v->left
+	else									//else
+		s = v->right;						//assign s as v->right
+	if ( Position<E>(v).isRoot() )			//is v root?
+		_root = s;							//assign root to s
+	else									//else
 	{
-		addRoot();							//create root
-		Node<E>* v = _root;					
-		v->element = value;					//assign a value to root
+		if ( p->left == v )					//is v a left child?
+			p->left = s;					//assign p->left as s
+		else								//else
+			p->right = s;					//assign p->right as s
 	}
-	else
-		addValue(_root, value);				//use add utility
-		
+	if ( s != nullptr )
+		s->parent = p;						//assign s->parent as p
+	delete v;								//delete v;
+	n--;									//reduce size count by 1
 }
 
-/*
-template <typename E>						//expande external node
-void BinaryTree<E>::expandExternal(const Position<E>& p)
-{
-	Node* v = p.v;							//p's node
-	v->left = new Node;						//add a new left child
-	v->left->parent = v;					//v is its parent
-	v->right = new Node;					//add a new right child
-	v->right->parent = v;					//v is its parent
-	n += 2;									//two more nodes
-}
-
-template <typename E>						//remove p and parent
-BinaryTree<E>::Position<E> BinaryTree<E>::removeAboveExternal(
-	const Position<E>& p)
-{
-	Node* w = p.v;							//p's node
-	Node* v = w->parent;					//p's parent
-	Node* sib = (w == v->left ? v->right : v->left);
-	if (v == _root) {						//child of root?
-		_root = sib;						//make sibling root
-		sib->parent = nullptr;
-	}
-	else {
-		Node* gparent = v->parent;			//w's grandparent
-		if (v == gparent->left) {			//replace parent by sib
-			gparent->left = sib;
-		}
-		else {
-			gparent->right = sib;
-			sib->parent = gparent;
-		}
-	}
-	delete w; delete v;						//delete removed nodes
-	n -= 2;									//two fewer nodes
-	return Position(sib);
-}
-*/
 
 template <typename E>
 void BinaryTree<E>::deleteTree(Node<E>* v)	//destructor utility
@@ -244,28 +287,134 @@ void BinaryTree<E>::deleteTree(Node<E>* v)	//destructor utility
 }
 
 template <typename E>						//add utility
-void BinaryTree<E>::addValue(Node<E>* v, E value)
+void BinaryTree<E>::addValue(Node<E>* v, E x)
 {
 	bool addLeft = true;					//variable defining add to the left
 	bool addRight = false;					//variable defining add to the right
-	if( v->element == value )				//is add needed?
+	if( v->element == x )					//is add needed?
 		return;								//if not, return
-	if( v->element > value )				//is current greater than value?
+	if( v->element > x )					//is current greater than value?
 	{
 		if(v->left == nullptr)				//check for nullptr
-			addNode(v, addLeft, value);		//add node if true
+			addNode(v, addLeft, x);			//add node if true
 		else
-			addValue(v->left, value);		//move left
+			addValue(v->left, x);			//move left
 	}
 	else
 	{
 		if(v->right == nullptr)				//check for nullptr
-			addNode(v, addRight, value);	//add node if true
+			addNode(v, addRight, x);		//add node if true
 		else
-			addValue(v->right, value);		//move right
+			addValue(v->right, x);			//move right
 	}
 		
 }
+
+template <typename E>
+Node<E>* BinaryTree<E>::searchTree(
+	Node<E>* v, E x)						//search tree utility
+{
+	if ( v->element == x )					//is node or end of branch?
+		return v;
+	if ( v->element > x )					//is v greater than x?
+	{	
+		if ( v->left == nullptr )			//end of the search?
+			throw NodeNotFound(
+				"Node is not in tree.");	//throw error
+		return searchTree(v->left,x);		//traverse left
+	}
+	if ( v->element < x )					//is v less than x?
+	{
+		if ( v->right == nullptr )			//end of the search?
+			throw NodeNotFound(
+				"Node is not in tree.");	//throw error
+		return searchTree(v->right,x);		//traverse right
+	}
+}
+
+
+template <typename E>						//get next utility (preorder)
+void BinaryTree<E>::preNext(Node<E>* v, Node<E>* x, Node<E>* y)
+{
+	if( y->parent != nullptr )				//check if given node is found
+	{								
+		y->parent = nullptr;				//prevent triggering later
+		y->left = v;						//assign left to next node
+	}
+	if(v == x)								//is this the node?
+		y->parent = x;						//flag subject node is found
+
+	if( v->left != nullptr )				//traverse left subtree
+		preNext(v->left,x,y);
+	if( v->right != nullptr )				//traverse right subtree
+		preNext(v->right,x,y);
+}
+
+template <typename E>						//get next utility (postorder)
+void BinaryTree<E>::postNext(Node<E>* v, Node<E>* x, Node<E>* y)
+{
+	if( v->left != nullptr )				//traverse left subtree
+		postNext(v->left,x,y);
+	if( v->right != nullptr )				//traverse right subtree
+		postNext(v->right,x,y);
+
+	if( y->parent != nullptr )				//check if given node is found
+	{								
+		y->parent = nullptr;				//prevent triggering later
+		y->left = v;						//assign left to next node
+	}
+	if(v == x)								//is this the node?
+		y->parent = x;						//flag subject node is found
+
+}
+
+template <typename E>						//get next utility (inorder)
+void BinaryTree<E>::inNext(Node<E>* v, Node<E>* x, Node<E>* y)
+{
+	if( v->left != nullptr )				//traverse left subtree
+		inNext(v->left,x,y);
+
+	if( y->parent != nullptr )				//check if given node is found
+	{								
+		y->parent = nullptr;				//prevent triggering later
+		y->left = v;						//assign left to next node
+	}
+	if(v == x)								//is this the node?
+		y->parent = x;						//flag subject node is found
+
+
+	if( v->right != nullptr )				//traverse right subtree
+		inNext(v->right,x,y);
+}
+
+template <typename E>						//return node after one given
+Node<E>* BinaryTree<E>::next(Node<E>* x, Traversal order)
+{
+	if ( empty() )							//check for empty tree
+		throw TreeEmpty(
+			"Tree is empty.");				//throw error
+	Node<E>* y = new Node<E>;				//create new node
+	switch (order)							//call the required traverse
+	{
+		case PREORDER:
+			preNext(_root,x,y);
+			break;
+		case POSTORDER:
+			postNext(_root,x,y);
+			break;
+		case INORDER:
+			inNext(_root,x,y);
+			break;
+	}
+	if ( y->left == nullptr )				//check for a result
+		if( y->parent != nullptr )			//check if initial item found
+			throw TreeLastItem(
+				"Last item in tree.");		//throw last item error
+		else
+			throw NodeNotFound(
+				"Node not found in tree.");	//throw not found error
+	return y->left;							//return next node
+}	
 
 template <typename E>						//preorder utility
 void BinaryTree<E>::preorder(Node<E>* v, PositionList<E>& pl) const
