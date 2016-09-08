@@ -1,9 +1,12 @@
 /******************************************************************************
 * Implementation of a Binary Tree for Assignment 2 of COMP 272
 *
-* Modified from Source: Data Structures and Algorithms in C++, 2nd Edition,
+* Modified from Sources: Data Structures and Algorithms in C++, 2nd Edition,
 *						by Michael T. Goodrich, Roberto Tamassia, David M.
 *						Mount, Wiley publisher, February 2011, © 2011
+* 
+* 						Open Data Structures an Introduction, by Pat Morin,
+* 						AU Press, © 2013
 *
 * Author:	Robert Ryan Dunn
 * Stu. No.:	3070207
