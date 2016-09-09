@@ -16,7 +16,6 @@
 #ifndef _BINARYTREE_H_						//if not defined
 #define _BINARYTREE_H_						//define BinaryTree
 
-#include <iostream>
 #include <list>
 #include "RuntimeException.h"
 
@@ -54,6 +53,8 @@ public:
 	{ return v->parent == nullptr; }		//root of tree?
 	template <typename E1>
 	friend class BinaryTree;				//provide BinaryTree access
+	template <typename E1>
+	friend class BinaryTreeTester;			//provide BinaryTreeTester access
 };
 
 
