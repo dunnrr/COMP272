@@ -1,11 +1,10 @@
 /******************************************************************************
-* Test program for the Implementation of a Binary tree functions
-* preorderNext(x), postorderNext(x), and inorderNext(x) as required for 
-* COMP 272 assignment 2 question 1.
+* Test program for the Implementation of Binary Search Tree tester as required 
+* for COMP 272 assignment 2 question 2.
 *
 * Author: Robert Ryan Dunn
 * SN: 3070207
-* Date: 26 August, 2016
+* Date: 8 September, 2016
 ******************************************************************************/
 
 #include "BinaryTreeTester.h"
@@ -51,11 +50,11 @@ void change(BinaryTreeTester<int> &BT, int initial,
 	}	
 }
 
-void printList(PositionList<int> positions)			//print out position list
+void printList(BinaryTree<int>::PositionList &positions)		//print out position list
 {
 	cout << "[";
 	int i = 1;
-	for(Position<int> n : positions)
+	for(GenPosition<int> n : positions)
 	{
 		cout << *n;
 		if (i < positions.size())
@@ -67,7 +66,7 @@ void printList(PositionList<int> positions)			//print out position list
 
 void printBT(BinaryTree<int> &BT)					//print out current tree
 {
-	PositionList<int> positions;
+	BinaryTree<int>::PositionList positions;
 	cout << "The preorder positions are: ";
 	positions = BT.prePositions();					
 	printList(positions);							//print out preorder tree

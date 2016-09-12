@@ -2,12 +2,6 @@
 * Implementation of a Binary Tree Testing algorithm for Assignment 2 of 
 * COMP 272
 *
-* Modified from Sources: Data Structures and Algorithms in C++, 2nd Edition,
-*						by Michael T. Goodrich, Roberto Tamassia, David M.
-*						Mount, Wiley publisher, February 2011, © 2011
-* 
-* 						Open Data Structures an Introduction, by Pat Morin,
-* 						AU Press, © 2013
 * 
 * Notes: changeNode is really not meant to ever be used, but was implemented to
 * 		confirm results won't always show true if the tree is not a binary 
@@ -19,7 +13,7 @@
 ******************************************************************************/
 
 #ifndef _BINARYTREETESTER_H_					//if not defined
-#define _BINARYTREETESTER_H_					//define BinaryTree
+#define _BINARYTREETESTER_H_					//define BinaryTreeTester
 
 #include "BinaryTree.h"
 
@@ -34,11 +28,13 @@ struct MinMaxBST
 template <typename E>
 class BinaryTreeTester: public BinaryTree<E>
 {
+private:
+	using Node = GenNode<E>;
 public:
 	void changeNode(E initial, E change);		//change the value of root
 	bool isBST();								//is the tree a BST?
 private:
-	MinMaxBST<E> checkBST(Node<E>* x);			//check if tree is BST
+	MinMaxBST<E> checkBST(Node* x);				//check if tree is BST
 };
 
 template <typename E>
@@ -47,7 +43,7 @@ void BinaryTreeTester<E>::changeNode(E initial,
 {
 	if ( this->empty() )						//check if empty
 		throw TreeEmpty("Tree is empty.");		//throw error
-	Node<E>* x = this->search(initial).v;		//find the node
+	Node* x = this->search(initial).v;			//find the node
 	x->element = change;						//change the nodes element
 }
 
@@ -59,7 +55,7 @@ bool BinaryTreeTester<E>::isBST()				//is the tree a BST?
 
 template <typename E>
 MinMaxBST<E> BinaryTreeTester<E>::checkBST(
-	Node<E>* x)									//check if tree is BST
+	Node* x)									//check if tree is BST
 {
 	if ( this->empty() )						//check if empty
 		throw TreeEmpty("Tree is empty.");		//throw error

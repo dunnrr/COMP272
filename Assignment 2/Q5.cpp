@@ -1,21 +1,42 @@
 /******************************************************************************
-* Test program for the Implementation of Binary tree functions
-* preorderNext(x), postorderNext(x), and inorderNext(x) as required for 
-* COMP 272 assignment 2 question 1.
+* Test program for the Implementation of a sub Binary tree with functions
+* preorderNumber(), postorderNumber(), and inorderNumber() as required for 
+* COMP 272 assignment 2 question 5.
 *
 * Author: Robert Ryan Dunn
 * SN: 3070207
-* Date: 26 August, 2016
+* Date: 8 September, 2016
 ******************************************************************************/
 
-#include "BinaryTree.h"
+#include "SubBinaryTree.h"
 #include <iostream>
 
 using std::cout;
 using std::endl;
 
+void assignNodes(SubBinaryTree<int> &BT)
+{
+	BT.preorderNumber();
+	BT.postorderNumber();
+	BT.inorderNumber();
+}
 
-void nextBT(BinaryTree<int> &BT, 
+void printNodes(SubBinaryTree<int> &BT)
+{
+	SubBinaryTree<int>::PositionList positions;
+	positions = BT.inPositions();
+	for(SubPosition<int> n : positions)
+	{
+		cout << endl;
+		cout << "Node: " << *n << endl;
+		cout << "Preorder Number: "  << n.prePos() << endl;
+		cout << "Postorder Number: " << n.postPos() << endl;
+		cout << "Inorder Number: " << n.inPos() << endl;
+	}
+	cout << endl;
+}
+
+void nextBT(SubBinaryTree<int> &BT, 
 	int x, Traversal order)							//print out next node value
 {
 	switch (order)
@@ -65,7 +86,7 @@ void nextBT(BinaryTree<int> &BT,
 	}
 }
 
-void removeNode(BinaryTree<int> &BT, int x)
+void removeNode(SubBinaryTree<int> &BT, int x)
 {
 	try
 	{
@@ -83,7 +104,7 @@ void removeNode(BinaryTree<int> &BT, int x)
 	}	
 }
 
-void printRoot(BinaryTree<int> &BT)					//print the root node
+void printRoot(SubBinaryTree<int> &BT)					//print the root node
 {
 	try
 	{
@@ -97,7 +118,7 @@ void printRoot(BinaryTree<int> &BT)					//print the root node
 	}
 }
 
-void emptyTree(BinaryTree<int> &BT)					//print out if empty or not
+void emptyTree(SubBinaryTree<int> &BT)					//print out if empty or not
 {
 	cout << "The tree is empty: ";
 	if ( BT.empty() )								//is the tree empty?
@@ -106,17 +127,17 @@ void emptyTree(BinaryTree<int> &BT)					//print out if empty or not
 		cout << "FALSE" << endl << endl;
 }
 
-void sizeTree(BinaryTree<int> &BT)					//print out the tree size
+void sizeTree(SubBinaryTree<int> &BT)					//print out the tree size
 {
 	cout << "The size of the tree is: "
 		<< BT.size() << endl << endl;
 }
 
-void printList(BinaryTree<int>::PositionList &positions)		//print out position list
+void printList(SubBinaryTree<int>::PositionList positions)			//print out position list
 {
 	cout << "[";
 	int i = 1;
-	for(GenPosition<int> n : positions)
+	for(SubPosition<int> n : positions)
 	{
 		cout << *n;
 		if (i < positions.size())
@@ -126,9 +147,9 @@ void printList(BinaryTree<int>::PositionList &positions)		//print out position l
 	cout << "]";
 }
 
-void printBT(BinaryTree<int> &BT)					//print out current tree
+void printBT(SubBinaryTree<int> &BT)					//print out current tree
 {
-	BinaryTree<int>::PositionList positions;
+	SubBinaryTree<int>::PositionList positions;
 	cout << "The preorder positions are: ";
 	positions = BT.prePositions();					
 	printList(positions);							//print out preorder tree
@@ -154,7 +175,7 @@ void testCase(int &test)							//prints test case value
 
 int main(void)
 {
-	BinaryTree<int> BT;								//create tree
+	SubBinaryTree<int> BT;							//create tree
 	int test = 1;									//assign test case value
 
 	testCase(test);									//print out test case no.
@@ -176,6 +197,14 @@ int main(void)
 	sizeTree(BT);									//tree size
 
 	testCase(test);									//print out test case no.
+	assignNodes(BT);								//assign node numbers
+	printNodes(BT);									//print node numbers
+	
+
+
+/*
+
+	testCase(test);									//print out test case no.
 	nextBT(BT,2,PREORDER);							//retreive the next element
 	nextBT(BT,2,POSTORDER);							//retreive the next element
 	nextBT(BT,2,INORDER);							//retreive the next element
@@ -189,6 +218,9 @@ int main(void)
 	nextBT(BT,10,PREORDER);							//retreive the next element
 	nextBT(BT,10,POSTORDER);						//retreive the next element
 	nextBT(BT,10,INORDER);							//retreive the next element
+	
+	
+	
 	
 	testCase(test);									//print out test case no.
 	removeNode(BT,7);								//remove node w 2 children
@@ -248,6 +280,6 @@ int main(void)
 	
 	cout << "Inorder next: ";
 	nextBT(BT,5,INORDER);							//find next node(inorder)
-	
+*/	
 	return EXIT_SUCCESS;							//exit success
 }

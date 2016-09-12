@@ -32,18 +32,32 @@ public:
 	TreeEmpty(const std::string& err) : RuntimeException(err) {}
 };
 
-//Exception thrown due to empty tree
+//Exception thrown due to last item in tree
 class TreeLastItem : public RuntimeException
 {
 public:
 	TreeLastItem(const std::string& err) : RuntimeException(err) {}
 };
 
-//Exception thrown due to empty tree
+//Exception thrown due to a node not found
 class NodeNotFound : public RuntimeException
 {
 public:
 	NodeNotFound(const std::string& err) : RuntimeException(err) {}
+};
+
+//Exception thrown due to an  existing element
+class EntryExists : public RuntimeException
+{
+public:
+	EntryExists(const std::string& err) : RuntimeException(err) {}
+};
+
+//Exception thrown due to a Non existant element
+class NonexistentEntry : public RuntimeException
+{
+public:
+	NonexistentEntry(const std::string& err) : RuntimeException(err) {}
 };
 
 //Exception thrown due to empty queue
