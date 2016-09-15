@@ -25,7 +25,7 @@ void printNodes(SubBinaryTree<int> &BT)
 {
 	SubBinaryTree<int>::PositionList positions;
 	positions = BT.inPositions();
-	for(SubPosition<int> n : positions)
+	for(GenPosition<int> n : positions)
 	{
 		cout << endl;
 		cout << "Node: " << *n << endl;
@@ -137,7 +137,7 @@ void printList(SubBinaryTree<int>::PositionList positions)			//print out positio
 {
 	cout << "[";
 	int i = 1;
-	for(SubPosition<int> n : positions)
+	for(GenPosition<int> n : positions)
 	{
 		cout << *n;
 		if (i < positions.size())
@@ -197,14 +197,6 @@ int main(void)
 	sizeTree(BT);									//tree size
 
 	testCase(test);									//print out test case no.
-	assignNodes(BT);								//assign node numbers
-	printNodes(BT);									//print node numbers
-	
-
-
-/*
-
-	testCase(test);									//print out test case no.
 	nextBT(BT,2,PREORDER);							//retreive the next element
 	nextBT(BT,2,POSTORDER);							//retreive the next element
 	nextBT(BT,2,INORDER);							//retreive the next element
@@ -218,9 +210,6 @@ int main(void)
 	nextBT(BT,10,PREORDER);							//retreive the next element
 	nextBT(BT,10,POSTORDER);						//retreive the next element
 	nextBT(BT,10,INORDER);							//retreive the next element
-	
-	
-	
 	
 	testCase(test);									//print out test case no.
 	removeNode(BT,7);								//remove node w 2 children
@@ -280,6 +269,22 @@ int main(void)
 	
 	cout << "Inorder next: ";
 	nextBT(BT,5,INORDER);							//find next node(inorder)
-*/	
+
+	testCase(test);									//print out test case no.
+	BT.add(5);										//add items to tree
+	BT.add(7);
+	BT.add(9);
+	BT.add(2);
+	BT.add(1);
+	BT.add(6);
+	BT.add(4);
+	BT.add(8);
+	BT.add(3);
+	printBT(BT);									//print tree
+
+	testCase(test);									//print out test case no.
+	assignNodes(BT);								//assign node numbers
+	printNodes(BT);									//print node numbers
+	
 	return EXIT_SUCCESS;							//exit success
 }

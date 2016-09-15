@@ -96,5 +96,7 @@
     <File Name="BinaryTree.h"/>
     <File Name="Q1.cpp"/>
     <File Name="RuntimeException.h"/>
+    <File Name="Node.h"/>
+    <File Name="Position.h"/>
   </VirtualDirectory>
 </CodeLite_Project>
