@@ -6,7 +6,7 @@ int main(void)
 	G.initialize("AdjacencyMatrix.txt");
 	G.printMatrix();
 	G.printPath();
-	G.DFS('g');
+	G.DFS('a');
 	G.printPath();
 	G.printMatrix();
 	return 0;

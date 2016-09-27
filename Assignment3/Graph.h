@@ -29,10 +29,17 @@ private:
 	bool visited[SIZE] = {false};
 	void visit(int node);
 	int findUnused(int node);
+//	int findUnusedEdges(int node);
 	vector<char> path;
 	stack<char> S;
 };
-
+/*
+int Graph::findUnusedEdges(int node)
+{
+	for (int i = 0; i < SIZE; i++)
+		if (matrix[node][i] == 1)
+}
+*/
 int Graph::findUnused(int node)
 {
 	for (int i = 0; i < SIZE; i++)
@@ -45,6 +52,7 @@ void Graph::visit(int node)
 {
 	if (visited[node])
 	{
+		path.push_back(map[node]);
 		return;
 	}
 	visited[node] = true;
@@ -55,6 +63,8 @@ void Graph::visit(int node)
 	{
 		matrix[node][edge] = 2;
 		visit(edge);
+		matrix[edge][node] = 2;
+		path.push_back(map[node]);
 		edge = findUnused(node);
 	}
 
