@@ -31,7 +31,7 @@ private:
 	int findUnused(int node);
 //	int findUnusedEdges(int node);
 	vector<char> path;
-	stack<char> S;
+//	stack<char> S;
 };
 /*
 int Graph::findUnusedEdges(int node)
@@ -56,7 +56,7 @@ void Graph::visit(int node)
 		return;
 	}
 	visited[node] = true;
-	S.push(node);
+//	S.push(node);
 	path.push_back(map[node]);
 	int edge = findUnused(node);
 	while(edge != -1)

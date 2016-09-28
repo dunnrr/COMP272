@@ -25,6 +25,13 @@ public:
 	std::string getMessage() const { return errorMsg; }
 };
 
+//Exception thrown due to empty heap
+class HeapEmpty : public RuntimeException
+{
+public:
+	HeapEmpty(const std::string& err) : RuntimeException(err) {}
+};
+
 //Exception thrown due to empty tree
 class TreeEmpty : public RuntimeException
 {
