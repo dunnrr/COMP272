@@ -96,5 +96,6 @@
     <File Name="MeldableHeap.h"/>
     <File Name="Node.h"/>
     <File Name="RuntimeException.h"/>
+    <File Name="Q7.cpp"/>
   </VirtualDirectory>
 </CodeLite_Project>

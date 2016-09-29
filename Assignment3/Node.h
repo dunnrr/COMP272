@@ -45,6 +45,8 @@ public:
 	friend class BinaryTree;				//provide BinaryTree access
 	template <typename E1>
 	friend class BSTTransform;				//provide BinaryTreeTester access
+	template <typename E1>
+	friend class MeldableHeap;				//provide MeldableHeap access
 };
 
 #endif
